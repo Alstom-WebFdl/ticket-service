@@ -1,0 +1,32 @@
+name: Transfer issues to "Remontée de bugs"
+
+on:
+  project_card:
+    types: [moved]
+    # Modifier ici pour inclure l'ID de la colonne "À faire" du projet V2
+    columns: ["<colonnes-A-faire-ID>"]
+  issues:
+    types: [labeled]
+    # Modifier ici pour inclure le nom du label "bug" que vous souhaitez suivre
+    labels: ["bug"]
+
+jobs:
+  transfer:
+    # Modifier ce nom pour décrire le flux de travail
+    name: Transfer issues
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get options
+        run: echo "::set-output name=options::{\"name\": \"Remontée de bugs\", \"id\": $(gh api graphql -f query='{organization(login: "Alstom-WebFdl") { projectV2(number: 3) { field(name: "Status") { __typename ... on ProjectV2SingleSelectField { options(first: 100) { nodes { id name } } } } } } }' --template='{{with (index .organization.projectV2.field 0)}}{{with (index .options.nodes 0)}}{{"{\"name\": \""}}{{.name}}{{"\", \"id\": \""}}{{.id}}{{"\"}"}}{{end}}{{end}}')}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          nom-de-l-organisation: "Alstom-WebFdl"
+          numéro-du-projet: 3
+      - name: Transfer Issue
+        uses: peter-evans/transfer-issue@v3.1.0
+        with:
+          to-column-id: ${{ env.options.id }}
+          api-token: ${{ secrets.GITHUB_TOKEN }}
+          comments: false
