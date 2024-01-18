@@ -13,8 +13,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: peter-evans/create-or-update-project-card@v2
         with:
-          project-name: PROJECT_NAME
-          column-name: "A faire"
+          project-name: Alstom-WebFdl
+          column-name: "À faire"
           issue-number: ${{ github.event.issue.number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -22,7 +22,7 @@ jobs:
 
       - uses: peter-evans/create-or-update-project-card@v2
         with:
-          project-name: PROJECT_NAME
+          project-name: Alstom-WebFdl
           column-name: "Remontée de bugs"
           issue-number: ${{ github.event.issue.number }}
         env:
