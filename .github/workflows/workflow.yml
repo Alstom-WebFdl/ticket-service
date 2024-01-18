@@ -18,7 +18,7 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: '!contains(github.event.issue.labels.*.name, \"bug\")'
+        if: contains(github.event.issue.labels.*.name, 'enhancement')
 
       - uses: peter-evans/create-or-update-project-card@v2
         with:
@@ -27,4 +27,4 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: 'contains(github.event.issue.labels.*.name, \"bug\")'
+        if: contains(github.event.issue.labels.*.name, 'bug')
