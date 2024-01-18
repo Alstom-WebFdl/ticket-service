@@ -6,13 +6,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  move_to_bug_report:
+  move_to_column:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Move issue to Bug report
-        uses: peter-evans/create-or-update-project-card@v2
+      - uses: actions/checkout@v2
+      - uses: peter-evans/create-or-update-project-card@v2
         with:
-          project-name: Alstom-WebFdl
+          project-name: PROJECT_NAME
+          column-name: "A faire"
+          issue-number: ${{ github.event.issue.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: '!contains(github.event.issue.labels.*.name, "bug")'
+
+      - uses: peter-evans/create-or-update-project-card@v2
+        with:
+          project-name: PROJECT_NAME
           column-name: "Remontée de bugs"
           issue-number: ${{ github.event.issue.number }}
-        if: contains(github.event.issue.labels.*.name, 'bug')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: 'contains(github.event.issue.labels.*.name, "bug")'
