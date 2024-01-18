@@ -11,6 +11,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '18.x'
       - uses: peter-evans/create-or-update-project-card@v2
         with:
           project-name: Alstom-WebFdl
