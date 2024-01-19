@@ -3,7 +3,6 @@ name: Workflow
 on:
   issues:
     types: [opened, reopened]
-  workflow_dispatch:
 
 jobs:
   move_to_column:
